@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tetris Game</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #141e30, #243b55);
+    color: white;
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 42px;
+    letter-spacing: 6px;
+    margin-bottom: 20px;
+}
+
+.game {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+canvas {
+    width: 300px;
+    height: 600px;
+    background: #111;
+    border: 4px solid white;
+    border-radius: 8px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+}
+
+.panel {
+    width: 180px;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.12);
+}
+
+.panel h2 {
+    margin-bottom: 20px;
+}
+
+.stat {
+    margin: 15px 0;
+}
+
+.stat span {
+    display: block;
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    background: #00d4ff;
+    color: #111;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #00a8cc;
+}
+
+.controls {
+    margin-top: 20px;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+#message {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .game {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    canvas {
+        width: 270px;
+        height: 540px;
+    }
+
+    .panel {
+        width: 270px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🎮 TETRIS</h1>
+
+    <div class="game">
+
+        <canvas id="tetris" width="300" height="600"></canvas>
+
+        <div class="panel">
+
+            <h2>Game Info</h2>
+
+            <div class="stat">
+                Score
+                <span id="score">0</span>
+            </div>
+
+            <div class="stat">
+                Level
+                <span id="level">1</span>
+            </div>
+
+            <div class="stat">
+                Lines
+                <span id="lines">0</span>
+            </div>
+
+            <button onclick="restartGame()">🔄 Restart</button>
+
+            <div class="controls">
+                <h3>Controls</h3>
+                <p>⬅️ Move Left</p>
+                <p>➡️ Move Right</p>
+                <p>⬇️ Move Down</p>
+                <p>⬆️ Rotate</p>
+                <p>Space = Drop</p>
+            </div>
+
+        </div>
+    </div>
+
+    <p id="message"></p>
+
+</div>
+
+<script>
+
+const canvas = document.getElementById("tetris");
+const ctx = canvas.getContext("2d");
+
+const ROWS = 20;
+const COLS = 10;
+const BLOCK = 30;
+
+ctx.scale(BLOCK, BLOCK);
+
+let board;
+let player;
+
+let score = 0;
+let level = 1;
+let lines = 0;
+
+let gameOver = false;
+let dropCounter = 0;
+let lastTime = 0;
+
+const pieces = [
+    {
+        shape: [[1,1,1,1]],
+        color: "#00ffff"
+    },
+    {
+        shape: [
+            [1,1],
+            [1,1]
+        ],
+        color: "#ffff00"
+    },
+    {
+        shape: [
+            [0,1,0],
+            [1,1,1]
+        ],
+        color: "#aa00ff"
+    },
+    {
+        shape: [
+            [1,0,0],
+            [1,1,1]
+        ],
+        color: "#ff8800"
+    },
+    {
+        shape: [
+            [0,0,1],
+            [1,1,1]
+        ],
+        color: "#0066ff"
+    },
+    {
+        shape: [
+            [0,1,1],
+            [1,1,0]
+        ],
+        color: "#00ff00"
+    },
+    {
+        shape: [
+            [1,1,0],
+            [0,1,1]
+        ],
+        color: "#ff3333"
+    }
+];
+
+function createBoard() {
+    return Array.from(
+        {length: ROWS},
+        () => Array(COLS).fill(0)
+    );
+}
+
+function createPiece() {
+
+    const random =
+        pieces[Math.floor(Math.random() * pieces.length)];
+
+    return {
+        shape: random.shape.map(row => [...row]),
+        color: random.color,
+        x: Math.floor(
+            COLS / 2 - random.shape[0].length / 2
+        ),
+        y: 0
+    };
+}
+
+function drawBlock(x, y, color) {
+
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, 1, 1);
+
+    ctx.strokeStyle = "#222";
+    ctx.lineWidth = 0.05;
+    ctx.strokeRect(x, y, 1, 1);
+}
+
+function draw() {
+
+    ctx.fillStyle = "#111";
+    ctx.fillRect(0, 0, COLS, ROWS);
+
+    board.forEach((row, y) => {
+
+        row.forEach((color, x) => {
+
+            if (color) {
+                drawBlock(x, y, color);
+            }
+
+        });
+
+    });
+
+    player.shape.forEach((row, y) => {
+
+        row.forEach((value, x) => {
+
+            if (value) {
+                drawBlock(
+                    player.x + x,
+                    player.y + y,
+                    player.color
+                );
+            }
+
+        });
+
+    });
+}
+
+function collision() {
+
+    for (let y = 0; y < player.shape.length; y++) {
+
+        for (let x = 0; x < player.shape[y].length; x++) {
+
+            if (!player.shape[y][x]) continue;
+
+            const newX = player.x + x;
+            const newY = player.y + y;
+
+            if (
+                newX < 0 ||
+                newX >= COLS ||
+                newY >= ROWS ||
+                (newY >= 0 && board[newY][newX])
+            ) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+function merge() {
+
+    player.shape.forEach((row, y) => {
+
+        row.forEach((value, x) => {
+
+            if (value) {
+                board[player.y + y][player.x + x] =
+                    player.color;
+            }
+
+        });
+
+    });
+}
+
+function move
