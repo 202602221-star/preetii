@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tetris Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <section class="game-card">
+      <div class="header">
+        <div>
+          <p class="eyebrow">CLASSIC ARCADE</p>
+          <h1>🧱 TETRIS</h1>
+        </div>
+        <button id="restartBtn" class="restart-btn">↻ Restart</button>
+      </div>
+      <div class="game-layout">
+        <div class="board-wrap">
+          <canvas id="gameCanvas" width="300" height="600" aria-label="Tetris game board"></canvas>
+          <div id="overlay" class="overlay">
+            <h2 id="overlayTitle">TETRIS</h2>
+            <p id="overlayText">Press Start to play</p>
+            <button id="startBtn" class="primary-btn">Start Game</button>
+          </div>
+        </div>
+        <aside class="sidebar">
+          <div class="stat-grid">
+            <div class="stat"><span>Score</span><strong id="score">0</strong></div>
+            <div class="stat"><span>Lines</span><strong id="lines">0</strong></div>
+            <div class="stat"><span>Level</span><strong id="level">1</strong></div>
+          </div>
+          <div class="next-card">
+            <h3>Next</h3>
+            <canvas id="nextCanvas" width="120" height="120"></canvas>
+          </div>
+          <div class="controls-card">
+            <h3>Controls</h3>
+            <p>← → Move</p><p>↑ Rotate</p><p>↓ Soft drop</p><p>Space Hard drop</p><p>P Pause</p>
+          </div>
+        </aside>
+      </div>
+      <div class="mobile-controls" aria-label="Mobile controls">
+        <button data-action="left">←</button><button data-action="rotate">↻</button>
+        <button data-action="right">→</button><button data-action="down">↓</button><button data-action="drop">⤓</button>
+      </div>
+      <p class="footer">Build • Play • Clear Lines • Have Fun!</p>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
