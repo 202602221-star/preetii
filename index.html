@@ -1,53 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tetris Game</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Priti — university student exploring AI, design and creative technology." />
+  <title>Priti | AI & Creative Technology</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="game-shell">
-    <section class="game-card">
-      <div class="header">
-        <div>
-          <p class="eyebrow">CLASSIC ARCADE</p>
-          <h1>🧱 TETRIS</h1>
-        </div>
-        <button id="restartBtn" class="restart-btn">↻ Restart</button>
-      </div>
-      <div class="game-layout">
-        <div class="board-wrap">
-          <canvas id="gameCanvas" width="300" height="600" aria-label="Tetris game board"></canvas>
-          <div id="overlay" class="overlay">
-            <h2 id="overlayTitle">TETRIS</h2>
-            <p id="overlayText">Press Start to play</p>
-            <button id="startBtn" class="primary-btn">Start Game</button>
+  <div class="site-shell">
+    <header class="nav-wrap">
+      <a class="logo" href="index.html">P<span>.</span></a>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="active" href="index.html">Home</a>
+        <a href="about.html">About & Projects</a>
+        <a class="nav-cta" href="about.html#contact">Let's connect ↗</a>
+      </nav>
+      <button class="menu-btn" aria-label="Open menu">☰</button>
+    </header>
+
+    <main>
+      <section class="hero section">
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span></span> UNIVERSITY STUDENT · AI & CREATIVE TECHNOLOGY</p>
+          <h1>Learning today.<br><em>Creating tomorrow.</em></h1>
+          <p class="hero-text">Hi, I'm <strong>Priti</strong>. I’m a university student exploring AI, design and digital technology—and turning what I learn into useful, creative projects.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="about.html">Explore my work <span>↗</span></a>
+            <a class="text-link" href="about.html#contact">Get in touch</a>
+          </div>
+          <div class="mini-stats">
+            <div><strong>AI</strong><span>Learning</span></div>
+            <div><strong>Web</strong><span>Building</span></div>
+            <div><strong>KR</strong><span>Language</span></div>
           </div>
         </div>
-        <aside class="sidebar">
-          <div class="stat-grid">
-            <div class="stat"><span>Score</span><strong id="score">0</strong></div>
-            <div class="stat"><span>Lines</span><strong id="lines">0</strong></div>
-            <div class="stat"><span>Level</span><strong id="level">1</strong></div>
+
+        <div class="hero-visual reveal delay-1">
+          <div class="visual-card">
+            <div class="floating-note note-one">curious mind ✦</div>
+            <div class="image-frame">
+              <img src="assets/hero-image.png" alt="Priti — personal profile visual" />
+            </div>
+            <div class="floating-note note-two">AI × Design</div>
+            <div class="circle-text">CREATE · LEARN · GROW · CREATE · LEARN · GROW · </div>
           </div>
-          <div class="next-card">
-            <h3>Next</h3>
-            <canvas id="nextCanvas" width="120" height="120"></canvas>
+        </div>
+      </section>
+
+      <section class="marquee" aria-label="Interests">
+        <div>ARTIFICIAL INTELLIGENCE <span>✦</span> CREATIVE DESIGN <span>✦</span> WEB PROJECTS <span>✦</span> KOREAN <span>✦</span> ARTIFICIAL INTELLIGENCE <span>✦</span></div>
+      </section>
+
+      <section class="intro section narrow reveal">
+        <p class="section-label">01 / MY DIRECTION</p>
+        <div class="intro-grid">
+          <h2>I want to use technology to make ideas <span>simple, useful and human.</span></h2>
+          <div>
+            <p>I enjoy learning new tools, experimenting with AI and creating digital experiences. My goal is to keep growing while building work that has a real purpose.</p>
+            <a class="arrow-link" href="about.html">More about me <span>→</span></a>
           </div>
-          <div class="controls-card">
-            <h3>Controls</h3>
-            <p>← → Move</p><p>↑ Rotate</p><p>↓ Soft drop</p><p>Space Hard drop</p><p>P Pause</p>
-          </div>
-        </aside>
-      </div>
-      <div class="mobile-controls" aria-label="Mobile controls">
-        <button data-action="left">←</button><button data-action="rotate">↻</button>
-        <button data-action="right">→</button><button data-action="down">↓</button><button data-action="drop">⤓</button>
-      </div>
-      <p class="footer">Build • Play • Clear Lines • Have Fun!</p>
-    </section>
-  </main>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer"><span>© 2026 Priti</span><span>Made with curiosity & code.</span></footer>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
